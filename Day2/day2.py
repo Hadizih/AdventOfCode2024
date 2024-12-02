@@ -16,9 +16,24 @@ def is_valid_report(report):
     
     return check_level_validity(levels)
 
+
+#Part 2 dampener
+def is_valid_with_dampener(report):
+    levels = [int(level) for level in report.split()]  
+    for i in range(len(levels)):
+        # remove the i-th level
+        modified_report = levels[:i] + levels[i+1:]
+
+        # check if the modified levels are in ascending or descending order
+        if ascending(modified_report) or descending(modified_report):
+            # check if the modified levels are valid
+            if check_level_validity(modified_report):
+                return True
+    return False
+
 # count the number of valid reports
 def count_valid_reports(reports):
-    return sum(1 for report in reports if is_valid_report(report))
+    return sum(1 for report in reports if (is_valid_report(report) or is_valid_with_dampener(report)))
 
 # check if the levels are in ascending order
 def ascending(levels):
