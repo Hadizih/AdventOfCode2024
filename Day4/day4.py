@@ -6,7 +6,7 @@
 # wenn nein, dann weiter
 
 def parse_input() -> list:
-    with open('input4small.txt', 'r') as f:
+    with open('input4.txt', 'r') as f:
         file = f.readlines()
         return [list.strip() for list in file]
 
@@ -25,58 +25,29 @@ def lookup_X(input: list) -> list:
 def lookup_XMAS(coordsX: list, input:list) -> int:
     
     xmas_counter = 0
-    for coords in coordsX:
-        y, x = coords
-        
-            # horizontal rechts
-        if x+3 < len(input[y]):
-            if input[y][x+1] == 'M':
-                if input[y][x+2] == 'A':
-                    if input[y][x+3] == 'S':
-                        xmas_counter+=1
-            # horizontal links
-        if x-3 >= 0:
-            if input[y][x-1] == 'M':
-                if input[y][x-2] == 'A':
-                    if input[y][x-3] == 'S':
-                        xmas_counter+=1
-        if y+3 < len(input):
-            # vertikal unten
-            if input[y+1][x] == 'M':
-                if input[y+2][x] == 'A':
-                    if input[y+3][x] == 'S':
-                        xmas_counter+=1
-            # vertikal oben
-        if y-3 >= 0:
-            if input[y-1][x] == 'M':
-                if input[y-2][x] == 'A':
-                    if input[y-3][x] == 'S':
-                        xmas_counter+=1
-            # diagonal unten rechts
-        if y+3 < len(input) and x+3 < len(input[y]):
-            if input[y+1][x+1] == 'M':
-                if input[y+2][x+2] == 'A':
-                    if input[y+3][x+3] == 'S':
-                        xmas_counter+=1
-            # diagonal oben links
-        if y-3 >= 0 and x-3 >= 0:
-            if input[y-1][x-1] == 'M':
-                if input[y-2][x-2] == 'A':
-                    if input[y-3][x-3] == 'S':
-                        xmas_counter+=1
-            # diagonal unten links
-        if y+3 < len(input) and x-3 >= 0:
-            if input[y+1][x-1] == 'M':
-                if input[y+2][x-2] == 'A':
-                    if input[y+3][x-3] == 'S':
-                        xmas_counter+=1
-            # diagonal oben rechts
-        if y-3 >= 0 and x+3 < len(input[y]):
-            if input[y-1][x+1] == 'M':
-                if input[y-2][x+2] == 'A':
-                    if input[y-3][x+3] == 'S':
-                        xmas_counter+=1
 
+    directions = [
+        (0, 1),   # horizontal rechts
+        (0, -1),  # horizontal links
+        (1, 0),   # vertikal unten
+        (-1, 0),  # vertikal oben
+        (1, 1),   # diagonal unten rechts
+        (-1, -1), # diagonal oben links
+        (1, -1),  # diagonal unten links
+        (-1, 1)   # diagonal oben rechts    
+    ]
+    # mehr pythonic by AI
+    for y, x in coordsX:
+        for dy, dx in directions:
+            # Prüfe, ob alle Indizes im gültigen Bereich liegen
+            if 0 <= y + 3 * dy < len(input) and 0 <= x + 3 * dx < len(input[y]):
+                # Überprüfe die "XMAS"-Reihenfolge
+                if (
+                    input[y + dy][x + dx] == 'M' and
+                    input[y + 2 * dy][x + 2 * dx] == 'A' and
+                    input[y + 3 * dy][x + 3 * dx] == 'S'
+                ):
+                    xmas_counter += 1
     return xmas_counter
 
     
