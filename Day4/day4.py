@@ -1,9 +1,3 @@
-# input parsen
-# koordinaten = y,x = zeile + index
-# finde X
-# prüfen ob rundherum ein M steht [] und positionen speichern
-# wenn ja, dann Position M speichern und je nach Richtung weitermachen
-# wenn nein, dann weiter
 
 def parse_input() -> list:
     with open('input4.txt', 'r') as f:
@@ -11,15 +5,15 @@ def parse_input() -> list:
         return [list.strip() for list in file]
 
 
-def lookup_X(input: list) -> list:
-    coordsX = []
+def lookup_char_coords(input: list, c: str) -> list:
+    list_of_coords = []
     for i, line in enumerate(input):
         y = i
         for j, char in enumerate(line):
-            if char == 'X':
+            if char == c:
                coords = (y, j)
-               coordsX.append(coords)
-    return coordsX
+               list_of_coords.append(coords)
+    return list_of_coords
 
 
 def lookup_XMAS(coordsX: list, input:list) -> int:
@@ -50,11 +44,32 @@ def lookup_XMAS(coordsX: list, input:list) -> int:
                     xmas_counter += 1
     return xmas_counter
 
-    
+def lookup_x_mas(coordsA: list, input: list) -> int:
+    x_mas_mas_counter = 0
+    directions: list = [
+        (-1, -1), # diagonal oben links
+        (1, 1),   # diagonal unten rechts
+        (-1, 1),  # diagonal oben rechts
+        (1, -1)   # diagonal unten links
+    ]
+
+    for y, x in coordsA:
+        x_mas_counter = 0
+        for dy, dx in directions:
+            if 0 <= y + dy*-1 < len(input) and 0 <= x + dx*-1 < len(input[y]) and 0 <= y + dy < len(input) and 0 <= x + dx < len(input[y]):
+                if (input[y + dy][x + dx] == 'M' and input[y + dy*-1][x + dx*-1] == 'S'):
+                    x_mas_counter += 1
+        if x_mas_counter >= 2:
+            x_mas_mas_counter += 1
+
+    return x_mas_mas_counter
+
 def main():
     input = parse_input()
-    coordsX = lookup_X(input)
-    print(lookup_XMAS(coordsX, input))
+    coordsX = lookup_char_coords(input, 'X')
+    coordsA = lookup_char_coords(input, 'A')
+    print(f"Part1 - XMAS: {lookup_XMAS(coordsX, input)}")
+    print(f"Part2 - X-MAS: {lookup_x_mas(coordsA, input)}")
 
 if __name__ == '__main__':
     main()
