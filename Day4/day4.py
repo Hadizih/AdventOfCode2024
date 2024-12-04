@@ -4,7 +4,7 @@ def parse_input() -> list:
         file = f.readlines()
         return [list.strip() for list in file]
 
-
+# gib Liste von Koordinaten von allen c zurück
 def lookup_char_coords(input: list, c: str) -> list:
     list_of_coords = []
     for i, line in enumerate(input):
@@ -15,7 +15,7 @@ def lookup_char_coords(input: list, c: str) -> list:
                list_of_coords.append(coords)
     return list_of_coords
 
-
+# P1 - XMAS
 def lookup_XMAS(coordsX: list, input:list) -> int:
     
     xmas_counter = 0
@@ -44,6 +44,7 @@ def lookup_XMAS(coordsX: list, input:list) -> int:
                     xmas_counter += 1
     return xmas_counter
 
+# P2 - X-MAS
 def lookup_x_mas(coordsA: list, input: list) -> int:
     x_mas_mas_counter = 0
     directions: list = [
@@ -59,7 +60,9 @@ def lookup_x_mas(coordsA: list, input: list) -> int:
             if 0 <= y + dy*-1 < len(input) and 0 <= x + dx*-1 < len(input[y]) and 0 <= y + dy < len(input) and 0 <= x + dx < len(input[y]):
                 if (input[y + dy][x + dx] == 'M' and input[y + dy*-1][x + dx*-1] == 'S'):
                     x_mas_counter += 1
+        # mehr oder gleich 2 mas pro A-Koordinate
         if x_mas_counter >= 2:
+            # erhöhe den gefundene x-mas
             x_mas_mas_counter += 1
 
     return x_mas_mas_counter
@@ -68,6 +71,7 @@ def main():
     input = parse_input()
     coordsX = lookup_char_coords(input, 'X')
     coordsA = lookup_char_coords(input, 'A')
+
     print(f"Part1 - XMAS: {lookup_XMAS(coordsX, input)}")
     print(f"Part2 - X-MAS: {lookup_x_mas(coordsA, input)}")
 
