@@ -96,9 +96,6 @@ def correct_updates(pages: dict, updates: list) -> list:
                                     reordered_update.insert(page_index, page)
                                     is_not_valid = True
 
-                                    
-                                    
-
         corrected_updates.append(reordered_update)
     return corrected_updates
 
